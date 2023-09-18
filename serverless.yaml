@@ -1,0 +1,21 @@
+service: order-status-alexa-skill
+
+frameworkVersion: '3'
+
+plugins:
+  - serverless-jetpack
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  region: us-east-1
+
+
+functions:
+  main:
+    handler: lambda/index.handler
+    events:
+      - httpApi:
+          method: any
+          path: /{any+}

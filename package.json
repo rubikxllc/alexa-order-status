@@ -1,0 +1,30 @@
+{
+  "name": "order-status-alexa-skill",
+  "version": "1.0.0",
+  "description": "",
+  "main": "lambda/index.js",
+  "scripts": {
+    "build": "tsc -w",
+    "deploy": "ask deploy"
+  },
+  "nodemonConfig": {
+    "colours": true
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Andy8647/order-status-alexa-skill.git"
+  },
+  "author": "Andy Luo",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Andy8647/order-status-alexa-skill/issues"
+  },
+  "homepage": "https://github.com/Andy8647/order-status-alexa-skill#readme",
+  "devDependencies": {
+    "typescript": "^5.2.2"
+  },
+  "dependencies": {
+    "serverless-jetpack": "^0.11.2",
+    "serverless-offline": "^12.0.4"
+  }
+}
