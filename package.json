@@ -4,7 +4,7 @@
   "description": "",
   "main": "lambda/index.js",
   "scripts": {
-    "build": "tsc -w",
+    "build": "tsc -p tsconfig.json",
     "deploy": "ask deploy"
   },
   "nodemonConfig": {
