@@ -1,4 +1,4 @@
 {
-  "launchRequest": "Welcome to Alexa, ",
-
+  "launchRequest": "Welcome to Order Status Tacker. You can ask me about your order status.",
+  "orderStatus": "Your order status is: "
 }
