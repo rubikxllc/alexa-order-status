@@ -6,12 +6,14 @@ import { getOrderStatus } from '../api/PromoStandard';
 export const AskOrderStatusRequestHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
     const request = handlerInput.requestEnvelope.request;
+    console.log('promo intent reached', request)
     return request.type === 'IntentRequest' && request.intent.name === 'PromoOrderStatus';
   },
   async handle(handlerInput: HandlerInput): Promise<Response> {
     const orderStatus = await getOrderStatus();
     const speechText = speech.orderStatus + orderStatus.orderStatus;
     const title = 'Order Status';
+    console.log('promo intent reached', handlerInput)
 
     return handlerInput.responseBuilder
       .speak(speechText)
