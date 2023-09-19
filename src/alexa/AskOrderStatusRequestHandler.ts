@@ -6,7 +6,7 @@ import { getOrderStatus } from '../api/PromoStandard';
 export const AskOrderStatusRequestHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
     const request = handlerInput.requestEnvelope.request;
-    return request.type === 'IntentRequest';
+    return request.type === 'IntentRequest' && request.intent.name === 'OrderStatus';
   },
   async handle(handlerInput: HandlerInput): Promise<Response> {
     const orderStatus = await getOrderStatus();
