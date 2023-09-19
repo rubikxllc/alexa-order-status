@@ -21,9 +21,12 @@
   },
   "homepage": "https://github.com/Andy8647/order-status-alexa-skill#readme",
   "devDependencies": {
+    "prettier": "^3.0.3",
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "ask-sdk-core": "^2.14.0",
+    "ask-sdk-model": "^1.86.0",
     "axios": "^1.5.0",
     "serverless-jetpack": "^0.11.2",
     "serverless-offline": "^12.0.4"
