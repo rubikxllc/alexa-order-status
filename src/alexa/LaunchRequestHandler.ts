@@ -12,6 +12,7 @@ export const LaunchRequestHandler: RequestHandler = {
 
     return input.responseBuilder
       .speak(speechText)
+      .withShouldEndSession(false)
       .reprompt(speechText)
       .withSimpleCard('Welcome to your Order Status', speechText)
       .getResponse();
