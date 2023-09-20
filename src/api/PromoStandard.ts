@@ -1,31 +1,11 @@
 import axios from 'axios';
+import { toJson } from 'xml2json';
 
-const url = process.env.PROMOSTANDARDS_URL;
-const account = process.env.PROMOSTANDARDS_ACCOUNT;
-const secret = process.env.PROMOSTANDARDS_SECRET;
+import { IOrderStatusRequest, PSResponse } from './interface';
 
-export enum OrderStatus {
-  Received = 'received',
-  Confirmed = 'confirmed',
-  Preproduction = 'preproduction',
-  InProduction = 'inProduction',
-  inStorage = 'inStorage',
-  partiallyShipped = 'partiallyShipped',
-  Shipped = 'shipped',
-  Complete = 'complete',
-  Cancelled = 'cancelled',
-}
-export interface IOrderStatus {
-  orderStatus: OrderStatus;
-}
-
-interface IOrderStatusRequest {
-  username: string;
-  password: string;
-  queryType: number; // 1 = PO Search, 2 = SO Search, 3 = Last Update Search, 4 = All Open Search
-  referenceNumber: string; // Only required for 1,2
-  statusTimeStamp: string; // Only required for 3
-}
+const username = 'ps3553427';
+const password = 'v5PG6x7S';
+const endpoint = 'https://devservices.alphabroder.com/orderStatus-1-0/service/index.php';
 
 const xmls = (param: IOrderStatusRequest) => {
   const { username, password, queryType, referenceNumber, statusTimeStamp } = param;
@@ -46,16 +26,13 @@ const xmls = (param: IOrderStatusRequest) => {
   `;
 };
 
-export const getOrderStatus = async (): Promise<IOrderStatus> => {
+const post = async (queryType: number, referenceNumber?: string): Promise<PSResponse> => {
   const params: IOrderStatusRequest = {
-    username: '',
-    password: '',
-    queryType: 4,
-    referenceNumber: '',
-    statusTimeStamp: '',
+    username,
+    password,
+    queryType,
+    referenceNumber,
   };
-
-  const endpoint = '';
 
   try {
     const res = await axios.post(endpoint, xmls(params), {
@@ -64,12 +41,22 @@ export const getOrderStatus = async (): Promise<IOrderStatus> => {
         SOAPAction: 'getOrderStatusDetails',
       },
     });
-    console.log(res);
-    return {
-      orderStatus: res.data,
-    };
+
+    return toJson(res.data, { object: true }) as unknown as PSResponse;
   } catch (err) {
     console.error(err);
     throw err;
   }
+};
+
+export const getOpenOrders = async () => {
+  const res = await post(4);
+  console.log('======== PS Get Open Orders ==========', res);
+  return res.Envelope.Body.GetOrderStatusDetailsResponse.OrderStatusArray;
+};
+
+export const getOrderStatusByReferenceNumber = async (referenceNumber: string) => {
+  const res = await post(1, referenceNumber);
+  console.log('======== PS Get Order Status By Reference Number ==========', res);
+  return res.Envelope.Body.GetOrderStatusDetailsResponse.OrderStatusArray;
 };

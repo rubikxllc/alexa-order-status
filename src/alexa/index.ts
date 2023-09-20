@@ -1,11 +1,12 @@
-import { Skill, SkillBuilders } from 'ask-sdk-core';
+import { HandlerInput, Skill, SkillBuilders } from 'ask-sdk-core';
 import { RequestEnvelope, ResponseEnvelope } from 'ask-sdk-model';
 
 import { LaunchRequestHandler } from './LaunchRequestHandler';
-import { AskOrderStatusRequestHandler } from './AskOrderStatusRequestHandler';
+import { OpenOrdersStatusRequestHandler } from './OpenOrdersStatusRequestHandler';
 import { AlexaErrorHandler } from './ErrorHandler';
 import { CancelAndStopIntentHandler } from './CancelAndStopIntentHandler';
 import { SessionEndedRequestHandler } from './SessionEndHandler';
+import { OrderStatusByIdRequestHandler } from './OrderStatusByIdRequestHandler';
 
 export class AlexaSkill {
   private skill: Skill;
@@ -14,7 +15,8 @@ export class AlexaSkill {
     this.skill = SkillBuilders.custom()
       .addRequestHandlers(
         LaunchRequestHandler,
-        AskOrderStatusRequestHandler,
+        OpenOrdersStatusRequestHandler,
+        OrderStatusByIdRequestHandler,
         CancelAndStopIntentHandler,
         SessionEndedRequestHandler,
       )

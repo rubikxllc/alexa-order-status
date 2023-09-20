@@ -1,6 +1,5 @@
 import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { Response } from 'ask-sdk-model';
-import speech from './speech-text.json';
 
 export const LaunchRequestHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
@@ -8,7 +7,8 @@ export const LaunchRequestHandler: RequestHandler = {
     return request.type === 'LaunchRequest';
   },
   handle(input: HandlerInput): Response {
-    const speechText = speech.launchRequest;
+    const speechText =
+      'Welcome to Promo Order Status Tacker. You can ask me about your order status.';
 
     return input.responseBuilder
       .speak(speechText)
