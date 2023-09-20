@@ -47,7 +47,7 @@ const post = async (queryType: number, referenceNumber?: string): Promise<PSResp
         SOAPAction: 'getOrderStatusDetails',
       },
     });
-
+    console.log('======= promo raw res =======', res);
     return toJson(res.data, { object: true }) as unknown as PSResponse;
   } catch (err) {
     console.error(err);
