@@ -2,6 +2,7 @@ import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { Response } from 'ask-sdk-model';
 import { getOpenOrders } from '../api/PromoStandard';
 import { errorHandler } from './helper';
+import { OrderStatusForAlexa } from '../api/interface';
 
 export const OpenOrdersStatusRequestHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
@@ -9,20 +10,23 @@ export const OpenOrdersStatusRequestHandler: RequestHandler = {
     return request.type === 'IntentRequest' && request.intent.name === 'OpenOrderStatus';
   },
   async handle(handlerInput: HandlerInput): Promise<Response> {
-    let orderStatus, speechText: string, title: string;
-
+    let ordersStatus: OrderStatusForAlexa[];
     try {
-      orderStatus = await getOpenOrders();
+      ordersStatus = await getOpenOrders();
     } catch (err) {
       return errorHandler(handlerInput, err);
     }
 
-    speechText = `You have ${orderStatus} open orders.`;
-    title = 'Order Status';
+    let speechText = `You have ${ordersStatus.length} open orders.`;
+    if (ordersStatus.length > 0) {
+      speechText += `Their reference numbers are ${ordersStatus
+        .map((orderStatus) => orderStatus.purchaseOrderNumber)
+        .join(', ')}`;
+    }
 
     return handlerInput.responseBuilder
       .speak(speechText)
-      .withSimpleCard(title, speechText)
+      .withSimpleCard('Order Status', speechText)
       .getResponse();
   },
 };

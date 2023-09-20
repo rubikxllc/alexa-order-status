@@ -30,20 +30,12 @@ export interface Body {
 }
 
 export interface GetOrderStatusDetailsResponse {
-  OrderStatusArray: OrderStatusArray;
-}
-
-export interface OrderStatusArray {
-  OrderStatus: OrderStatus;
+  OrderStatusArray: OrderStatus[];
 }
 
 export interface OrderStatus {
   purchaseOrderNumber: string;
-  OrderStatusDetailArray: OrderStatusDetailArray;
-}
-
-export interface OrderStatusDetailArray {
-  OrderStatusDetail: OrderStatusDetail;
+  OrderStatusDetailArray: OrderStatusDetail[];
 }
 
 export interface OrderStatusDetail {
@@ -54,4 +46,11 @@ export interface OrderStatusDetail {
   expectedDeliveryDate: Date;
   responseRequired: boolean;
   validTimestamp: Date;
+}
+
+export interface OrderStatusForAlexa {
+  statusName: EOrderStatus;
+  expectedShipDate: Date;
+  expectedDeliveryDate: Date;
+  purchaseOrderNumber: string;
 }

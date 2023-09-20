@@ -1,7 +1,13 @@
 import axios from 'axios';
 import { toJson } from 'xml2json';
 
-import { IOrderStatusRequest, PSResponse } from './interface';
+import {
+  IOrderStatusRequest,
+  OrderStatus,
+  OrderStatusDetail,
+  OrderStatusForAlexa,
+  PSResponse,
+} from './interface';
 
 const username = 'ps3553427';
 const password = 'v5PG6x7S';
@@ -49,14 +55,31 @@ const post = async (queryType: number, referenceNumber?: string): Promise<PSResp
   }
 };
 
-export const getOpenOrders = async () => {
+export const getOpenOrders = async (): Promise<OrderStatusForAlexa[]> => {
   const res = await post(4);
-  console.log('======== PS Get Open Orders ==========', res);
-  return res.Envelope.Body.GetOrderStatusDetailsResponse.OrderStatusArray;
+  return mapOrderStatus(res.Envelope.Body.GetOrderStatusDetailsResponse.OrderStatusArray);
 };
 
-export const getOrderStatusByReferenceNumber = async (referenceNumber: string) => {
+export const getOrderStatusByReferenceNumber = async (
+  referenceNumber: string,
+): Promise<OrderStatusForAlexa> => {
   const res = await post(1, referenceNumber);
-  console.log('======== PS Get Order Status By Reference Number ==========', res);
-  return res.Envelope.Body.GetOrderStatusDetailsResponse.OrderStatusArray;
+  return mapOrderStatus(res.Envelope.Body.GetOrderStatusDetailsResponse.OrderStatusArray)[0];
 };
+
+const mapOrderStatus = (OrderStatusArray: OrderStatus[]): OrderStatusForAlexa[] =>
+  OrderStatusArray.map((orderStatus: OrderStatus) => {
+    const orderStatusDetail: OrderStatusDetail = orderStatus.OrderStatusDetailArray[0];
+
+    console.log(
+      `'======= orderStatusDetail ======= for ${orderStatus.purchaseOrderNumber}`,
+      orderStatusDetail,
+    );
+
+    return {
+      statusName: orderStatusDetail.statusName,
+      expectedShipDate: orderStatusDetail.expectedShipDate,
+      expectedDeliveryDate: orderStatusDetail.expectedDeliveryDate,
+      purchaseOrderNumber: orderStatus.purchaseOrderNumber,
+    };
+  });
