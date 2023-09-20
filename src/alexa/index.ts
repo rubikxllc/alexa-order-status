@@ -4,7 +4,6 @@ import { RequestEnvelope, ResponseEnvelope } from 'ask-sdk-model';
 import { LaunchRequestHandler } from './LaunchRequestHandler';
 import { AskOrderStatusRequestHandler } from './AskOrderStatusRequestHandler';
 import { AlexaErrorHandler } from './ErrorHandler';
-import { HelpIntentHandler } from './HelpIntentHandler';
 import { CancelAndStopIntentHandler } from './CancelAndStopIntentHandler';
 import { SessionEndedRequestHandler } from './SessionEndHandler';
 
@@ -16,7 +15,6 @@ export class AlexaSkill {
       .addRequestHandlers(
         LaunchRequestHandler,
         AskOrderStatusRequestHandler,
-        HelpIntentHandler,
         CancelAndStopIntentHandler,
         SessionEndedRequestHandler,
       )

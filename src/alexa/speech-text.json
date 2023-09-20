@@ -1,4 +1,5 @@
 {
   "launchRequest": "Welcome to Order Status Tacker. You can ask me about your order status.",
-  "orderStatus": "Your order status is: "
+  "orderStatus": "Your order status is: ",
+  "error": "Sorry, there is something wrong with PrompStandards. Please try again later."
 }
