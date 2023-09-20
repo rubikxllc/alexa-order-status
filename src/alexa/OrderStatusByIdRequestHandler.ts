@@ -15,6 +15,7 @@ export const OrderStatusByIdRequestHandler: RequestHandler = {
     }
 
     const slots = handlerInput.requestEnvelope.request.intent.slots;
+    console.log('====== slots ======', slots);
     const referenceNumber = slots && slots.referenceNumber && slots.referenceNumber.value;
 
     if (!referenceNumber) return errorHandler(handlerInput, 'No referenceNumber in request');
