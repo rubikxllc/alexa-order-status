@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { toJson } from 'xml2json';
+import { Builder, parseStringPromise } from 'xml2js';
 
 import {
   IOrderStatusRequest,
@@ -15,21 +15,29 @@ const endpoint = 'https://devservices.alphabroder.com/orderStatus-1-0/service/in
 
 const xmls = (param: IOrderStatusRequest) => {
   const { username, password, queryType, referenceNumber, statusTimeStamp } = param;
-  return `
-    <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns="http://www.promostandards.org/WSDL/OrderStatusService/1.0.0/">
-      <soapenv:Header/>
-      <soapenv:Body>
-        <ns:GetOrderStatusDetailsRequest>
-          <ns:wsVersion>1.0.0</ns:wsVersion>
-          <ns:id>${username}</ns:id>
-          <ns:password>${password}</ns:password>
-          <ns:queryType>${queryType}</ns:queryType>
-          <ns:referenceNumber>${referenceNumber}</ns:referenceNumber>
-          <ns:statusTimeStamp>${statusTimeStamp}</ns:statusTimeStamp>
-        </ns:GetOrderStatusDetailsRequest>
-      </soapenv:Body>
-    </soapenv:Envelope>
-  `;
+
+  const obj = {
+    'soapenv:Envelope': {
+      $: {
+        'xmlns:soapenv': 'http://schemas.xmlsoap.org/soap/envelope/',
+        'xmlns:ns': 'http://www.promostandards.org/WSDL/OrderStatusService/1.0.0/',
+      },
+      'soapenv:Header': {},
+      'soapenv:Body': {
+        'ns:GetOrderStatusDetailsRequest': {
+          'ns:wsVersion': '1.0.0',
+          'ns:id': username,
+          'ns:password': password,
+          'ns:queryType': queryType,
+          'ns:referenceNumber': referenceNumber,
+          'ns:statusTimeStamp': statusTimeStamp,
+        },
+      },
+    },
+  };
+
+  const builder = new Builder({ headless: true });
+  return builder.buildObject(obj);
 };
 
 const post = async (queryType: number, referenceNumber?: string): Promise<PSResponse> => {
@@ -47,8 +55,7 @@ const post = async (queryType: number, referenceNumber?: string): Promise<PSResp
         SOAPAction: 'getOrderStatusDetails',
       },
     });
-    console.log('======= promo raw res =======', res);
-    return toJson(res.data, { object: true }) as unknown as PSResponse;
+    return await parseStringPromise(res.data);
   } catch (err) {
     console.error(err);
     throw err;
@@ -57,7 +64,7 @@ const post = async (queryType: number, referenceNumber?: string): Promise<PSResp
 
 export const getOpenOrders = async (): Promise<OrderStatusForAlexa[]> => {
   const res = await post(4);
-  console.log('======= promo res =======', res);
+  console.log('======= promo parsed res =======', res);
   return mapOrderStatus(res.Envelope.Body.GetOrderStatusDetailsResponse.OrderStatusArray);
 };
 
