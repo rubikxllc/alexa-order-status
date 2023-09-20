@@ -57,6 +57,7 @@ const post = async (queryType: number, referenceNumber?: string): Promise<PSResp
 
 export const getOpenOrders = async (): Promise<OrderStatusForAlexa[]> => {
   const res = await post(4);
+  console.log('======= promo res =======', res);
   return mapOrderStatus(res.Envelope.Body.GetOrderStatusDetailsResponse.OrderStatusArray);
 };
 
@@ -64,6 +65,7 @@ export const getOrderStatusByReferenceNumber = async (
   referenceNumber: string,
 ): Promise<OrderStatusForAlexa> => {
   const res = await post(1, referenceNumber);
+  console.log('======= promo res =======', res);
   return mapOrderStatus(res.Envelope.Body.GetOrderStatusDetailsResponse.OrderStatusArray)[0];
 };
 

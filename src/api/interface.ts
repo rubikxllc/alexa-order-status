@@ -31,6 +31,7 @@ export interface Body {
 
 export interface GetOrderStatusDetailsResponse {
   OrderStatusArray: OrderStatus[];
+  errorMessage?: string;
 }
 
 export interface OrderStatus {
