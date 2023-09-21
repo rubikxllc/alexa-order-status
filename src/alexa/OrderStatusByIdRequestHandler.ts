@@ -33,6 +33,7 @@ export const OrderStatusByIdRequestHandler: RequestHandler = {
     return handlerInput.responseBuilder
       .speak(speechText)
       .withSimpleCard('Order Status', speechText)
+      .withShouldEndSession(false)
       .getResponse();
   },
 };

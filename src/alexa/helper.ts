@@ -7,7 +7,7 @@ export const errorHandler = (handlerInput: HandlerInput, error: any) => {
   return handlerInput.responseBuilder
     .speak(errorText)
     .withSimpleCard('Error', errorText)
-    .withShouldEndSession(false)
+    .withShouldEndSession(true)
     .getResponse();
 };
 
