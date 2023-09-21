@@ -56,4 +56,4 @@ export interface OrderStatusForAlexa {
   purchaseOrderNumber: string;
 }
 
-export type IOrderStatusResponse = OrderStatusForAlexa[] | OrderStatusForAlexa | string;
+export type IOrderStatusResponse = OrderStatusForAlexa[] | string;

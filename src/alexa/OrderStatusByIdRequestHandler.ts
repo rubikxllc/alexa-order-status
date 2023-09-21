@@ -2,7 +2,7 @@ import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { Response } from 'ask-sdk-model';
 import { getOrderStatusByReferenceNumber } from '../api/PromoStandard';
 import { errorHandler, generateOrderStatusSpeechText } from './helper';
-import { OrderStatusForAlexa } from '../api/interface';
+import { IOrderStatusResponse } from '../api/interface';
 
 export const OrderStatusByIdRequestHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
@@ -15,20 +15,23 @@ export const OrderStatusByIdRequestHandler: RequestHandler = {
     }
 
     const slots = handlerInput.requestEnvelope.request.intent.slots;
-    console.log('====== slots ======', slots);
     const referenceNumber =
       slots && slots.referenceNumber && slots.referenceNumber.value.trim().toUpperCase();
 
     if (!referenceNumber) return errorHandler(handlerInput, 'No referenceNumber in request');
 
-    let orderStatus: OrderStatusForAlexa;
+    let orderStatus: IOrderStatusResponse;
     try {
       orderStatus = await getOrderStatusByReferenceNumber(referenceNumber);
     } catch (err) {
       return errorHandler(handlerInput, err);
     }
 
-    const speechText = generateOrderStatusSpeechText(referenceNumber, orderStatus);
+    if (typeof orderStatus === 'string') {
+      return errorHandler(handlerInput, orderStatus);
+    }
+
+    const speechText = generateOrderStatusSpeechText(referenceNumber, orderStatus[0]);
 
     return handlerInput.responseBuilder
       .speak(speechText)
