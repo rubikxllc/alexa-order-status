@@ -5,7 +5,8 @@
   "main": "lambda/index.js",
   "scripts": {
     "build": "tsc -p tsconfig.json",
-    "deploy": "ask deploy"
+    "deploy": "ask deploy",
+    "test": "ts-node src/api/test.ts"
   },
   "nodemonConfig": {
     "colours": true

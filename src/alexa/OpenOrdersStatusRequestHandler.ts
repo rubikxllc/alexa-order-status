@@ -14,6 +14,7 @@ export const OpenOrdersStatusRequestHandler: RequestHandler = {
     try {
       ordersStatus = await getOpenOrders();
     } catch (err) {
+      console.log(err);
       return errorHandler(handlerInput, err);
     }
 

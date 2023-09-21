@@ -2,7 +2,7 @@ import { HandlerInput } from 'ask-sdk-core';
 import { OrderStatusForAlexa } from '../api/interface';
 
 export const errorHandler = (handlerInput: HandlerInput, error: any) => {
-  console.error(error);
+  console.error('-------ERROR--------\n', error, '\n-------ERROR--------');
   const errorText = 'Sorry, there is something wrong with PrompStandards. Please try again later.';
   return handlerInput.responseBuilder
     .speak(errorText)
