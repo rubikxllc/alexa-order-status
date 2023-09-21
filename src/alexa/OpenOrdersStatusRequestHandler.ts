@@ -24,6 +24,7 @@ export const OpenOrdersStatusRequestHandler: RequestHandler = {
       return handlerInput.responseBuilder
         .speak(ordersStatus)
         .withSimpleCard('Order Status', ordersStatus)
+        .withShouldEndSession(false)
         .getResponse();
     }
 
@@ -37,6 +38,7 @@ export const OpenOrdersStatusRequestHandler: RequestHandler = {
     return handlerInput.responseBuilder
       .speak(speechText)
       .withSimpleCard('Order Status', speechText)
+      .withShouldEndSession(false)
       .getResponse();
   },
 };
