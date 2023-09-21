@@ -1,11 +1,9 @@
 import { OrderStatusForAlexa } from './interface';
 import { mapOrderStatus, post } from './utils';
 
-export const getOpenOrders = async (): Promise<OrderStatusForAlexa[]> => {
+export const getOpenOrders = async (): Promise<OrderStatusForAlexa[] | string> => {
   const res = await post(4);
-  if (res.errorMessage) {
-    throw res.errorMessage;
-  }
+  if (res.errorMessage) return res.errorMessage;
   return mapOrderStatus(res.OrderStatusArray);
 };
 

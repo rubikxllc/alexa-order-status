@@ -10,7 +10,7 @@ export const OpenOrdersStatusRequestHandler: RequestHandler = {
     return request.type === 'IntentRequest' && request.intent.name === 'OpenOrderStatus';
   },
   async handle(handlerInput: HandlerInput): Promise<Response> {
-    let ordersStatus: OrderStatusForAlexa[];
+    let ordersStatus: OrderStatusForAlexa[] | string;
     try {
       ordersStatus = await getOpenOrders();
     } catch (err) {
@@ -18,7 +18,16 @@ export const OpenOrdersStatusRequestHandler: RequestHandler = {
       return errorHandler(handlerInput, err);
     }
 
-    let speechText = `You have ${ordersStatus.length} open orders.`;
+    let speechText: string;
+
+    if (typeof ordersStatus === 'string') {
+      return handlerInput.responseBuilder
+        .speak(ordersStatus)
+        .withSimpleCard('Order Status', ordersStatus)
+        .getResponse();
+    }
+
+    speechText = `You have ${ordersStatus.length} open orders.`;
     if (ordersStatus.length > 0) {
       speechText += `Their reference numbers are ${ordersStatus
         .map((orderStatus) => orderStatus.purchaseOrderNumber)

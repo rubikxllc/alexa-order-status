@@ -7,6 +7,7 @@ export const errorHandler = (handlerInput: HandlerInput, error: any) => {
   return handlerInput.responseBuilder
     .speak(errorText)
     .withSimpleCard('Error', errorText)
+    .withShouldEndSession(false)
     .getResponse();
 };
 
@@ -17,10 +18,18 @@ export const generateOrderStatusSpeechText = (
   const { statusName, expectedDeliveryDate, expectedShipDate } = orderStatus;
   let speechText = `The status of order ${referenceNumber} is ${statusName}`;
   if (expectedShipDate) {
-    speechText += ` and is expected to ship on ${orderStatus.expectedShipDate}`;
+    speechText += ` and is expected to ship on ${parseDate(expectedShipDate)}`;
   }
   if (expectedDeliveryDate) {
-    speechText += ` and is expected to deliver on ${orderStatus.expectedDeliveryDate}`;
+    speechText += ` and is expected to deliver on ${parseDate(expectedDeliveryDate)}`;
   }
   return speechText;
 };
+
+const parseDate = (date: Date) =>
+  date.toLocaleDateString('en-US', {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  });
