@@ -55,3 +55,5 @@ export interface OrderStatusForAlexa {
   expectedDeliveryDate: Date;
   purchaseOrderNumber: string;
 }
+
+export type IOrderStatusResponse = OrderStatusForAlexa[] | string;

@@ -8,13 +8,13 @@ export const LaunchRequestHandler: RequestHandler = {
   },
   handle(input: HandlerInput): Response {
     const speechText =
-      'Welcome to Promo Order Status Tacker. You can ask me about your order status.';
+      'Welcome to Promo Order Status Tracker. You can ask me about your order status.';
 
     return input.responseBuilder
       .speak(speechText)
       .withShouldEndSession(false)
       .reprompt(speechText)
-      .withSimpleCard('Welcome to your Order Status', speechText)
+      .withSimpleCard('Welcome to your Promo Order Status', speechText)
       .getResponse();
   },
 };

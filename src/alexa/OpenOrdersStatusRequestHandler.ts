@@ -2,7 +2,7 @@ import { HandlerInput, RequestHandler } from 'ask-sdk-core';
 import { Response } from 'ask-sdk-model';
 import { getOpenOrders } from '../api/PromoStandard';
 import { errorHandler } from './helper';
-import { OrderStatusForAlexa } from '../api/interface';
+import { IOrderStatusResponse } from '../api/interface';
 
 export const OpenOrdersStatusRequestHandler: RequestHandler = {
   canHandle(handlerInput: HandlerInput): boolean {
@@ -10,7 +10,7 @@ export const OpenOrdersStatusRequestHandler: RequestHandler = {
     return request.type === 'IntentRequest' && request.intent.name === 'OpenOrderStatus';
   },
   async handle(handlerInput: HandlerInput): Promise<Response> {
-    let ordersStatus: OrderStatusForAlexa[] | string;
+    let ordersStatus: IOrderStatusResponse;
     try {
       ordersStatus = await getOpenOrders();
     } catch (err) {
